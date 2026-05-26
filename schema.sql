@@ -117,7 +117,10 @@ ALTER TABLE public.satin_settings ENABLE ROW LEVEL SECURITY;
 CREATE POLICY "Allow public read" ON public.satin_settings FOR SELECT USING (true);
 CREATE POLICY "Allow admin write" ON public.satin_settings FOR ALL USING (true);
 
--- Isi default iuran kas jika kosong
+-- Isi default pengaturan jika kosong
 INSERT INTO public.satin_settings (key, value) 
-VALUES ('kasTarget', '10000') 
+VALUES 
+    ('kasTarget', '10000'),
+    ('cloudinaryCloudName', 'dui485svg'),
+    ('cloudinaryUploadPreset', 'Satin-website')
 ON CONFLICT (key) DO NOTHING;
