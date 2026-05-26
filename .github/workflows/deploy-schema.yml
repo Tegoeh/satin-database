@@ -1,0 +1,31 @@
+name: Deploy SQL Schema to Supabase
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'schema.sql'
+  workflow_dispatch: # Memungkinkan pemicuan manual dari tab Actions di GitHub
+
+jobs:
+  deploy:
+    name: Apply SQL Schema
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Install PostgreSQL Client
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y postgresql-client
+
+      - name: Execute SQL on Supabase
+        env:
+          PGPASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}
+        run: |
+          echo "Memulai migrasi skema SQL ke Supabase..."
+          psql -h db.bcxaufqmdhhnxrrtorjf.supabase.co -p 5432 -d postgres -U postgres -f schema.sql
+          echo "Migrasi sukses diterapkan!"
